@@ -1,0 +1,151 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int front = -1;
+int rear = -1;
+
+int deque[5]; // Double-ended queue
+
+void insertFront();
+void insertRear();
+void deleteFront();
+void deleteRear();
+void display();
+
+int main() {
+    int choice;
+
+    while (1) {
+        printf("\n1. Insert at Front\n");
+        printf("2. Insert at Rear\n");
+        printf("3. Delete from Front\n");
+        printf("4. Delete from Rear\n");
+        printf("5. Display\n");
+        printf("6. Quit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                insertFront();
+                break;
+            case 2:
+                insertRear();
+                break;
+            case 3:
+                deleteFront();
+                break;
+            case 4:
+                deleteRear();
+                break;
+            case 5:
+                display();
+                break;
+            case 6:
+                exit(0);
+            default:
+                printf("Invalid choice!\n");
+        }
+    }
+
+    return 0;
+}
+
+void insertFront() {
+    int x;
+
+    if ((front == 0 && rear == 4) || (front == rear + 1)) {
+        printf("Deque is full (overflow).\n");
+        return;
+    }
+
+    printf("Enter element to insert at front: ");
+    scanf("%d", &x);
+
+    if (front == -1) {
+        front = 0;
+        rear = 0;
+    } else if (front == 0) {
+        front = 4;
+    } else {
+        front--;
+    }
+
+    deque[front] = x;
+}
+
+void insertRear() {
+    int x;
+
+    if ((front == 0 && rear == 4) || (front == rear + 1)) {
+        printf("Deque is full (overflow).\n");
+        return;
+    }
+
+    printf("Enter element to insert at rear: ");
+    scanf("%d", &x);
+
+    if (rear == -1) {
+        front = 0;
+        rear = 0;
+    } else if (rear == 4) {
+        rear = 0;
+    } else {
+        rear++;
+    }
+
+    deque[rear] = x;
+}
+
+void deleteFront() {
+    if (front == -1) {
+        printf("Deque is empty (underflow).\n");
+        return;
+    }
+
+    printf("Deleted element from front: %d\n", deque[front]);
+
+    if (front == rear) {
+        front = -1;
+        rear = -1;
+    } else if (front == 4) {
+        front = 0;
+    } else {
+        front++;
+    }
+}
+
+void deleteRear() {
+    if (rear == -1) {
+        printf("Deque is empty (underflow).\n");
+        return;
+    }
+
+    printf("Deleted element from rear: %d\n", deque[rear]);
+
+    if (front == rear) {
+        front = -1;
+        rear = -1;
+    } else if (rear == 0) {
+        rear = 4;
+    } else {
+        rear--;
+    }
+}
+
+void display() {
+    if (front == -1) {
+        printf("Deque is empty.\n");
+        return;
+    }
+
+    printf("Deque elements: ");
+    int i = front;
+
+    while (i != rear) {
+        printf("%d ", deque[i]);
+        i = (i + 1) % 5;
+    }
+
+    printf("%d\n", deque[rear]);
+}
